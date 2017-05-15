@@ -101,7 +101,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2017-05-14</span>
-            <span class="time">00:13:29</span>
+            <span class="time">00:34:15</span>
           </span>
           
           <!--  Categories  -->
@@ -126,19 +126,7 @@
           <p>Geeknote 同步后的Markdown 中的代码段 未正确解析。<br><a id="more"></a></p>
 <h1 id="Geeknote对Markdown中的代码段支持问题（待处理）"><a href="#Geeknote对Markdown中的代码段支持问题（待处理）" class="headerlink" title="Geeknote对Markdown中的代码段支持问题（待处理）"></a>Geeknote对Markdown中的代码段支持问题（待处理）</h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>进来一直用geeknote+markdown来写笔记。<br>昨天发现了一些问题。</p>
 <p>先讲一下配置:</p>
-<h3 id="Geeknote-Markdown"><a href="#Geeknote-Markdown" class="headerlink" title="Geeknote + Markdown"></a>Geeknote + Markdown</h3><h3 id="问题1-未解析代码段"><a href="#问题1-未解析代码段" class="headerlink" title="问题1 未解析代码段"></a>问题1 未解析代码段</h3><p>对于被围栏式代码段 geeknote 并没有正确解析。</p>
-<p>在<a href="https://github.com/VitaliyRodnenko/geeknote/blob/master/geeknote/editor.py" target="_blank" rel="external">Editor.py</a>源代码中可以见到</p>
-<p>在第10行:<figure class="highlight plain"><figcaption><span>markdown2 as markdown```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">第171行：```contentHTML = markdown.markdown(content)</div></pre></td></tr></table></figure></p>
-<p>可以见到geeknote的markdown解析是通过python-markdown这个包实现的。<br>而<a href="https://github.com/trentm/python-markdown2/wiki/Extras" target="_blank" rel="external">Markdown2默认不支持围栏式代码块</a></p>
-<blockquote>
-<p>fenced-code-blocks: Allows a code block to not have to be indented by fencing it with ‘```’ on a line before and after. Based on <a href="http://github.github.com/github-flavored-markdown/" target="_blank" rel="external">http://github.github.com/github-flavored-markdown/</a> with support for syntax highlighting.</p>
-</blockquote>
-<p>想要起支持，则需要<a href="http://stackoverflow.com/questions/25828453/markdown2-how-to-get-extras-working" target="_blank" rel="external">加上extras</a></p>
-<blockquote>
-<p>markdown2.markdown(text,extras=[‘fenced-code-blocks’])</p>
-</blockquote>
-<p>不想这样的话，就用四个空格缩进代码吧。</p>
-<h3 id="问题2-对-lt-gt-的支持不好"><a href="#问题2-对-lt-gt-的支持不好" class="headerlink" title="问题2 对&lt;&gt;的支持不好"></a>问题2 对<strong>&lt;&gt;</strong>的支持不好</h3>
+<h3 id="Geeknote-Markdown"><a href="#Geeknote-Markdown" class="headerlink" title="Geeknote + Markdown"></a>Geeknote + Markdown</h3><h3 id="问题1-未解析代码段"><a href="#问题1-未解析代码段" class="headerlink" title="问题1 未解析代码段"></a>问题1 未解析代码段</h3><h3 id="问题2-对支持不好"><a href="#问题2-对支持不好" class="headerlink" title="问题2 对支持不好"></a>问题2 对支持不好</h3>
         </div>
       </div>
     </div>
