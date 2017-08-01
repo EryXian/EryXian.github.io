@@ -100,13 +100,13 @@
 <meta name="description" content="Geeknote 同步后的Markdown 中的代码段 未正确解析。">
 <meta name="keywords" content="Evernote,Geeknote,Markdown">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Geeknote对Markdown中的代码段支持问题（待处理）">
+<meta property="og:title" content="Geeknote对Markdown中的代码段支持问题（==）">
 <meta property="og:url" content="http://yoursite.com/2017/05/14/geeknote-makedown-code-segment/index.html">
 <meta property="og:site_name" content="云眉庄">
 <meta property="og:description" content="Geeknote 同步后的Markdown 中的代码段 未正确解析。">
-<meta property="og:updated_time" content="2017-07-31T12:42:56.000Z">
+<meta property="og:updated_time" content="2017-08-01T05:30:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Geeknote对Markdown中的代码段支持问题（待处理）">
+<meta name="twitter:title" content="Geeknote对Markdown中的代码段支持问题（==）">
 <meta name="twitter:description" content="Geeknote 同步后的Markdown 中的代码段 未正确解析。">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Geeknote对Markdown中的代码段支持问题（待处理） | 云眉庄</title>
+  <title>Geeknote对Markdown中的代码段支持问题（==） | 云眉庄</title>
   
 
 
@@ -287,7 +287,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Geeknote对Markdown中的代码段支持问题（待处理）</h1>
+          <h1 class="post-title" itemprop="name headline">Geeknote对Markdown中的代码段支持问题（==）</h1>
         
 
         <div class="post-meta">
@@ -357,11 +357,13 @@
 
       
         <p>Geeknote 同步后的Markdown 中的代码段 未正确解析。<br><a id="more"></a></p>
-<h1 id="Geeknote对Markdown中的代码段支持问题"><a href="#Geeknote对Markdown中的代码段支持问题" class="headerlink" title="Geeknote对Markdown中的代码段支持问题"></a>Geeknote对Markdown中的代码段支持问题</h1><h2 id="问题-未解析代码段"><a href="#问题-未解析代码段" class="headerlink" title="问题 未解析代码段"></a>问题 未解析代码段</h2><p>Geeknote 对围栏式代码段不能正常解析.</p>
+<h1 id="Geeknote对Markdown中的代码段支持问题"><a href="#Geeknote对Markdown中的代码段支持问题" class="headerlink" title="Geeknote对Markdown中的代码段支持问题"></a>Geeknote对Markdown中的代码段支持问题</h1><h2 id="问题-未解析代码段"><a href="#问题-未解析代码段" class="headerlink" title="问题 未解析代码段"></a>问题 未解析代码段</h2><p>Geeknote 对围栏式代码段不能正常解析。<br>对于 <code>#include&lt;&gt;</code>不能正常解析出来，导致不能同步。</p>
 <h2 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h2><p>阅读源码，发现在<a href="https://github.com/VitaliyRodnenko/geeknote/blob/master/geeknote/editor.py" target="_blank" rel="external">Editor.py</a>源代码中可以见到在第10行<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> markdown2 <span class="keyword">as</span> markdown</div></pre></td></tr></table></figure></p>
 <p>和第171行<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">contentHTML = markdown.markdown(content)</div></pre></td></tr></table></figure></p>
 <p>可以见到geeknote的markdown解析是通过python-markdown2这个包实现的。而<a href="https://github.com/trentm/python-markdown2/wiki/Extras" target="_blank" rel="external">Markdown2默认不支持围栏式代码块</a>，想要起支持，则需要<a href="http://stackoverflow.com/questions/25828453/markdown2-how-to-get-extras-working" target="_blank" rel="external">加上extras</a>。</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="修改源码重新编译"><a href="#修改源码重新编译" class="headerlink" title="修改源码重新编译(==)"></a>修改源码重新编译(==)</h3><p>因为原作者已经停止更新，且使用后出现登陆问题，所以从<a href="https://github.com/pipakin/geeknote" target="_blank" rel="external">这个版本</a>下载源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">contentHTML = markdown.markdown(content, extras = [<span class="string">"fenced-code-blocks"</span>])</div></pre></td></tr></table></figure>
+<p>倒是能正常解析了，但是背景色跟普通文本一样，代码也没有高亮…</p>
 
       
     </div>
