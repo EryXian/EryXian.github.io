@@ -81,7 +81,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Frp,CloudServer,LinuxTools,WindowsTools," />
+  <meta name="keywords" content="Mac,VM,VirtualBox,Linux,Ubuntu," />
 
 
 
@@ -97,24 +97,17 @@
 
 
 
-<meta name="description" content="简单配置就能内网穿透">
-<meta name="keywords" content="Frp,CloudServer,LinuxTools,WindowsTools">
+<meta name="description" content="一台Mac主机上，安装VirtualBox，VirtualBox里安装Ubuntu，实现host-only网络模式，从Mac主机的终端通过ssh登陆Ubuntu，这样就能在Mac 终端中使用原生的Linux了。">
+<meta name="keywords" content="Mac,VM,VirtualBox,Linux,Ubuntu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Frp 初体验">
-<meta property="og:url" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/index.html">
+<meta property="og:title" content="Mac命令行中使用原生Linux">
+<meta property="og:url" content="http://yoursite.com/2017/12/29/Mac-ssh-to-VM-Linux/index.html">
 <meta property="og:site_name" content="云眉庄">
-<meta property="og:description" content="简单配置就能内网穿透">
-<meta property="og:image" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/intranet_receiver.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/intranet_transmitter.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/inner_net_penetration_model.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/cp_download_link_of_frp_linux.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/internet_receiver.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/internet_transmitter.png">
-<meta property="og:updated_time" content="2017-07-31T14:43:08.000Z">
+<meta property="og:description" content="一台Mac主机上，安装VirtualBox，VirtualBox里安装Ubuntu，实现host-only网络模式，从Mac主机的终端通过ssh登陆Ubuntu，这样就能在Mac 终端中使用原生的Linux了。">
+<meta property="og:updated_time" content="2017-12-29T15:42:45.982Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Frp 初体验">
-<meta name="twitter:description" content="简单配置就能内网穿透">
-<meta name="twitter:image" content="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/intranet_receiver.png">
+<meta name="twitter:title" content="Mac命令行中使用原生Linux">
+<meta name="twitter:description" content="一台Mac主机上，安装VirtualBox，VirtualBox里安装Ubuntu，实现host-only网络模式，从Mac主机的终端通过ssh登陆Ubuntu，这样就能在Mac 终端中使用原生的Linux了。">
 
 
 
@@ -142,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/29/Mac-ssh-to-VM-Linux/"/>
 
 
 
 
 
-  <title>Frp 初体验 | 云眉庄</title>
+  <title>Mac命令行中使用原生Linux | 云眉庄</title>
   
 
 
@@ -277,7 +270,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/09/use-frp-in-the-first-time/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/29/Mac-ssh-to-VM-Linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Connor">
@@ -294,7 +287,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Frp 初体验</h1>
+          <h1 class="post-title" itemprop="name headline">Mac命令行中使用原生Linux</h1>
         
 
         <div class="post-meta">
@@ -306,8 +299,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-09T10:06:37+08:00">
-                2017-06-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T23:03:53+08:00">
+                2017-12-29
               </time>
             
 
@@ -363,98 +356,48 @@
       
 
       
-        <p>简单配置就能内网穿透<br><a id="more"></a></p>
-<h1 id="Frp体验——内网穿透"><a href="#Frp体验——内网穿透" class="headerlink" title="Frp体验——内网穿透"></a>Frp体验——内网穿透</h1><p>本来想用用ngork的，发现<br><a href="https://github.com/fatedier/frp" target="_blank" rel="external">frp</a>十分简单，于是用腾讯云服务来实验了一把。</p>
-<h2 id="实验简介"><a href="#实验简介" class="headerlink" title="实验简介"></a>实验简介</h2><p>内网模拟效果：</p>
-<ul>
-<li><p>使用一个TCP调试助手作为服务器端软件，获取本机的内网IP和端口，并开启监听<br><img src="intranet_receiver.png" alt="use-frp-in-the-first-time/intranet_receiver.png"></p>
-</li>
-<li><p>使用另一个TCP调试助手作为客户端软件，刚刚监听的IP端口，连接并发送数据。<br><img src="intranet_transmitter.png" alt="use-frp-in-the-first-time/intranet_transmitter.png"></p>
-</li>
-<li><p>发送测试数据：</p>
+        <p>一台Mac主机上，安装VirtualBox，VirtualBox里安装Ubuntu，实现host-only网络模式，从Mac主机的终端通过ssh登陆Ubuntu，这样就能在Mac 终端中使用原生的Linux了。</p>
+<a id="more"></a>
+<h1 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h1><ol>
+<li>从VirtualBox官网下载安装包并安装之</li>
+<li>从Ubuntu官网下载镜像，并在VirtualBox中安装Ubuntu</li>
+<li><p>进入Ubuntu系统安装ssh 服务器并启动在终端中输入：</p>
 <blockquote>
-<p>hello world!</p>
+<p>sudo apt-get install openssh-server</p>
+<p>sudo /etc/init.d/ssh start</p>
 </blockquote>
 </li>
-</ul>
-<p>因为服务器端和客户端在同一局域网内，所以可以正常通信。</p>
-<p>现在要进行内网穿透实验，客户端软件向一个公网IP和端口发送数据，数据会被“转发到”我们设定的在内网中的服务器端软件上。</p>
-<p>其原理如下图所示：</p>
-<p><img src="inner_net_penetration_model.png" alt="inner_net_penetration_model.png"></p>
-<h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><ul>
-<li>Frp服务器： Ubuntu  LTS 16.04,       64位</li>
-<li>Frp客户端： Windows 10,      64位</li>
-</ul>
-<h2 id="frp软件安装"><a href="#frp软件安装" class="headerlink" title="frp软件安装"></a>frp软件安装</h2><h3 id="Frp服务器端下载安装"><a href="#Frp服务器端下载安装" class="headerlink" title="Frp服务器端下载安装"></a>Frp服务器端下载安装</h3><ul>
-<li><p>ssh登录云服务器</p>
-</li>
-<li><p>事先获取安装包下载链接<br>到<a href="https://github.com/fatedier/frp/releases" target="_blank" rel="external">下载界面</a><br>,将鼠标移动到要下载的链接,右击可以复制链接</p>
-<p><img src="cp_download_link_of_frp_linux.png" alt="安装包下载链接"></p>
-</li>
-<li><p>下载安装包至云服务器</p>
-<p>利用上一步的获取的链接下载frp安装包</p>
-<blockquote>
-<p>wget <a href="https://github.com/fatedier/frp/releases/download/v0.11.0/frp_0.11.0_linux_amd64.tar.gz" target="_blank" rel="external">https://github.com/fatedier/frp/releases/download/v0.11.0/frp_0.11.0_linux_amd64.tar.gz</a></p>
+</ol>
+<h1 id="配置虚拟机设计"><a href="#配置虚拟机设计" class="headerlink" title="配置虚拟机设计"></a>配置虚拟机设计</h1><ol>
+<li>关闭Ubuntu系统</li>
+<li>激活该虚拟机的第二块虚拟网卡，并以Host-only模式联网<blockquote>
+<p>Setting -&gt; Network -&gt; Adapter 2 -&gt; Enable Network Adapter -&gt; Attached to Host-only Adapter</p>
 </blockquote>
 </li>
-<li><p>解压即安装</p>
-<blockquote>
-<p>tar -xzf frp_0.11.0_linux_amd64.tar.gz</p>
+<li>启动Ubuntu 并查看 ip,在终端输入：<blockquote>
+<p>ifconfig</p>
 </blockquote>
 </li>
-</ul>
-<h3 id="Frp客户端下载安装"><a href="#Frp客户端下载安装" class="headerlink" title="Frp客户端下载安装"></a>Frp客户端下载安装</h3><p>  到<a href="https://github.com/fatedier/frp/releases" target="_blank" rel="external">下载界面</a>下载并解压，注意保持版本一致</p>
-<h2 id="配置与测试"><a href="#配置与测试" class="headerlink" title="配置与测试"></a>配置与测试</h2><p>Frp服务器端frps配置<br>进入解压目录</p>
+</ol>
+<p>将看到一个192.168.xxx.xxx 的IP地址，<strong>注意不是192.168.xxx.255,那是广播地址</strong></p>
+<h1 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h1><p>离开虚拟Linux， 回到Mac，启动终端</p>
 <blockquote>
-<p> cd frp_0.11.0_linux_amd64/</p>
+<p>ssh username@192.168.xxx.xxx</p>
 </blockquote>
-<p>查看或修改<em>frp<strong>s</strong>.ini</em>  </p>
+<p>username 是安装的Ubuntu的用户名，192.168.xxx.xxx 是刚才看到的地址。</p>
+<h1 id="为什么要这么折腾"><a href="#为什么要这么折腾" class="headerlink" title="为什么要这么折腾"></a>为什么要这么折腾</h1><ol>
+<li>直接使用原生Linux</li>
+<li>虚拟机中的图形界面比较差</li>
+<li>不用切换工作环境</li>
+<li>没网的时候也能用（针对云服务器）</li>
+</ol>
+<h1 id="遇到的小问题"><a href="#遇到的小问题" class="headerlink" title="遇到的小问题"></a>遇到的小问题</h1><p>之前这么装过一次，后来那台虚拟机被长期不用被删了。再搞一次时，遇到：<br><em>Host key verification failed</em>错误。</p>
+<p>解决方案：在Mac中</p>
 <blockquote>
-<p>vi frp<strong>s</strong>.ini</p>
+<p>vim ~/.ssh/known_hosts</p>
 </blockquote>
-<p>注意是 frp<strong>s</strong>.ini, 不是frp<strong>c</strong>.ini</p>
-<p>文件如下即可，如果不是就改成这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[common]</div><div class="line">bind_port = 7000</div></pre></td></tr></table></figure></p>
-<p>执行</p>
-<blockquote>
-<p>./frps -c frps.ini</p>
-</blockquote>
-<p>成功之后会显示：</p>
-<blockquote>
-<p>Start frps success …</p>
-</blockquote>
-<h3 id="客户端frpc配置"><a href="#客户端frpc配置" class="headerlink" title="客户端frpc配置"></a>客户端frpc配置</h3><p>进入解压目录</p>
-<blockquote>
-<p> cd frp_0.11.0_linux_amd64/</p>
-</blockquote>
-<p>修改<em>frp<strong>c</strong>.ini</em>  </p>
-<blockquote>
-<p>vi frp<strong>c</strong>.ini</p>
-</blockquote>
-<p>注意是 frp<strong>c</strong>.ini, 不是frp<strong>s</strong>.ini</p>
-<p>格式如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[common]</div><div class="line">server_addr = xxx.xxx.xxx.xxx</div><div class="line">server_port = 7000</div><div class="line"></div><div class="line">[tcptest]</div><div class="line">type = tcp</div><div class="line">local_ip = zzz.zzz.zzz.zzz</div><div class="line">local_port = yyyy</div><div class="line">remote_port = 6000</div></pre></td></tr></table></figure></p>
-<p>这里面有3个量是要根据实际情况来 xxx.xxx.xxx.xxx是云服务的IP地址，zzz.zzz.zzz.zzz是本地服务IP， yyyy是本地服务端口<br>对于本次实验来说：zzz.zzz.zzz.zzz =192.168.1.106, yyyy=1234</p>
-<p>执行</p>
-<blockquote>
-<p>./frp<strong>c</strong>.exe -c frp<strong>c</strong>.ini</p>
-</blockquote>
-<p>成功之后会显示：</p>
-<blockquote>
-<p>login to server sucess …</p>
-</blockquote>
-<h3 id="连接与发送测试"><a href="#连接与发送测试" class="headerlink" title="连接与发送测试"></a>连接与发送测试</h3><ul>
-<li><p>TCP服务端软件还是跟之前一样设置，启动。</p>
-<p><img src="internet_receiver.png" alt="internet_receiver.png"></p>
-</li>
-<li><p>客户端软件的远程IP为frpc.ini中的server_addr，即xxx.xxx.xxx.xxx，端口为frpc.ini 中的remote_port。</p>
-<p><img src="internet_transmitter.png" alt="internet_transmitter.png"></p>
-</li>
-<li><p>发送测试数据：</p>
-<blockquote>
-<p>testIP</p>
-</blockquote>
-</li>
-</ul>
-<p>成功通信。</p>
+<p>删除冲突的IP的认证信息。</p>
+<h1 id="更进一步"><a href="#更进一步" class="headerlink" title="更进一步"></a>更进一步</h1><p>docker !<br>docker !<br>docker !</p>
 
       
     </div>
@@ -484,13 +427,15 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Frp/" rel="tag"># Frp</a>
+            <a href="/tags/Mac/" rel="tag"># Mac</a>
           
-            <a href="/tags/CloudServer/" rel="tag"># CloudServer</a>
+            <a href="/tags/VM/" rel="tag"># VM</a>
           
-            <a href="/tags/LinuxTools/" rel="tag"># LinuxTools</a>
+            <a href="/tags/VirtualBox/" rel="tag"># VirtualBox</a>
           
-            <a href="/tags/WindowsTools/" rel="tag"># WindowsTools</a>
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
           
         </div>
       
@@ -503,8 +448,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/14/geeknote-makedown-code-segment/" rel="next" title="Geeknote对Markdown中的代码段支持问题（==）">
-                <i class="fa fa-chevron-left"></i> Geeknote对Markdown中的代码段支持问题（==）
+              <a href="/2017/06/09/use-frp-in-the-first-time/" rel="next" title="Frp 初体验">
+                <i class="fa fa-chevron-left"></i> Frp 初体验
               </a>
             
           </div>
@@ -512,10 +457,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/29/Mac-ssh-to-VM-Linux/" rel="prev" title="Mac命令行中使用原生Linux">
-                Mac命令行中使用原生Linux <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -645,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Frp体验——内网穿透"><span class="nav-text">Frp体验——内网穿透</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实验简介"><span class="nav-text">实验简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境说明"><span class="nav-text">环境说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#frp软件安装"><span class="nav-text">frp软件安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Frp服务器端下载安装"><span class="nav-text">Frp服务器端下载安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Frp客户端下载安装"><span class="nav-text">Frp客户端下载安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置与测试"><span class="nav-text">配置与测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端frpc配置"><span class="nav-text">客户端frpc配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接与发送测试"><span class="nav-text">连接与发送测试</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装软件"><span class="nav-text">安装软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置虚拟机设计"><span class="nav-text">配置虚拟机设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#连接"><span class="nav-text">连接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要这么折腾"><span class="nav-text">为什么要这么折腾</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#遇到的小问题"><span class="nav-text">遇到的小问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更进一步"><span class="nav-text">更进一步</span></a></li></ol></div>
             
 
           </div>
